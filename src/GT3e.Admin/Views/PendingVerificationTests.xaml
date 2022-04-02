@@ -11,13 +11,21 @@
              d:DataContext="{x:Type vm:PendingVerificationTestsViewModel}">
     <Grid>
         <Grid.RowDefinitions>
-            <RowDefinition Height="Auto"></RowDefinition>
-            <RowDefinition Height="*"></RowDefinition>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
         </Grid.RowDefinitions>
+
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="Auto" />
+            <ColumnDefinition Width="*" />
+        </Grid.ColumnDefinitions>
 
         <sf:ToolBarAdv EnableAddRemoveButton="False"
                        GripperVisibility="Hidden"
-                       OverflowButtonVisibility="Hidden" Grid.Row="0">
+                       OverflowButtonVisibility="Hidden"
+                       Grid.Row="0"
+                       Grid.Column="0"
+                       Grid.ColumnSpan="2">
 
             <Button>
                 <Image Source="/GT3e.Admin;component/Restore.ico"
@@ -26,14 +34,96 @@
 
             </Button>
         </sf:ToolBarAdv>
-        <ListBox Grid.Row="1" ItemsSource="{Binding PendingTests}"
-                 HorizontalAlignment="Left" Width="300">
+        <ListBox Grid.Row="1"
+                 Grid.Column="0"
+                 ItemsSource="{Binding PendingTests}"
+                 SelectedItem="{Binding SelectedTest, Mode=TwoWay}"
+                 HorizontalAlignment="Left"
+                 Width="300">
             <ListBox.ItemTemplate>
                 <DataTemplate>
-                    <TextBlock Text="{Binding Name}" Margin="5"/>
+                    <TextBlock Text="{Binding Name}"
+                               Margin="5" />
                 </DataTemplate>
             </ListBox.ItemTemplate>
         </ListBox>
+
+        <Grid Grid.Column="1"
+              Grid.Row="1">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="*" />
+            </Grid.RowDefinitions>
+
+            <Button Grid.Column="0"
+                    Grid.Row="0"
+                    Command="{Binding LoadTestCommand}"
+                    Margin="5"
+                    HorizontalAlignment="Left"
+                    IsEnabled="{Binding IsLoadEnabled}" Height="30" Width="75">
+                Load
+            </Button>
+
+            <Grid Grid.Column="0"
+                  Grid.Row="1"
+                  HorizontalAlignment="Left"
+                  Visibility="{Binding StatsPanelVisibility}">
+                <Grid.Resources>
+                    <Style TargetType="TextBlock">
+                        <Setter Property="VerticalAlignment"
+                                Value="Center" />
+                        <Setter Property="FontStyle"
+                                Value="Italic" />
+                        <Setter Property="Margin"
+                                Value="10,0,20,0" />
+                    </Style>
+                </Grid.Resources>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                </Grid.RowDefinitions>
+
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition Width="Auto" />
+                </Grid.ColumnDefinitions>
+
+                <Label Grid.Column="0"
+                       Grid.Row="0">
+                    First Name:
+                </Label>
+                <TextBlock Grid.Column="1"
+                           Grid.Row="0"
+                           Text="{Binding CurrentRaceSession.DriverFirstName}" />
+
+                <Label Grid.Column="2"
+                       Grid.Row="0">
+                    Last Name:
+                </Label>
+                <TextBlock Grid.Column="3"
+                           Grid.Row="0"
+                           Text="{Binding CurrentRaceSession.DriverLastName}" />
+
+                <Label Grid.Column="0"
+                       Grid.Row="1">
+                    Best Lap:
+                </Label>
+                <TextBlock Grid.Column="1"
+                           Grid.Row="1"
+                           Text="{Binding CurrentRaceSession.FastestLapTime}" />
+
+                <Label Grid.Column="2"
+                       Grid.Row="1">
+                    Average Lap:
+                </Label>
+                <TextBlock Grid.Column="3"
+                           Grid.Row="1"
+                           Text="{Binding CurrentRaceSession.AverageLapTime}" />
+            </Grid>
+
+        </Grid>
 
     </Grid>
 </UserControl>

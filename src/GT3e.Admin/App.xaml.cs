@@ -27,11 +27,16 @@ public partial class App : Application
         LogWriter.Info("GT3e Tools started");
     }
 
-    private void EnsureAppDataFolderExists()
+    private void EnsureAppDataFoldersExist()
     {
         if(!Directory.Exists(PathProvider.AppDataFolderPath))
         {
             Directory.CreateDirectory(PathProvider.AppDataFolderPath);
+        }
+
+        if(!Directory.Exists(PathProvider.DownloadsFolderPath))
+        {
+            Directory.CreateDirectory(PathProvider.DownloadsFolderPath);
         }
     }
 
@@ -141,7 +146,7 @@ public partial class App : Application
         SyncfusionLicenseProvider.RegisterLicense(
             "NTk0NDg0QDMxMzkyZTM0MmUzMFJGNngySWViaG8rWmlVdTQwVldJNHU4ZUJaM2V6YVhMaGd0UTJub0FGVzg9");
         SfSkinManager.ApplyStylesOnApplication = true;
-        this.EnsureAppDataFolderExists();
+        this.EnsureAppDataFoldersExist();
         this.EnsureConfigExists();
         Configuration.Init();
         LogWriter.Init();

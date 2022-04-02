@@ -51,6 +51,10 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\GT3e.Admin.Acc\GT3e.Acc.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
     <Resource Include="Delete.ico" />
     <Resource Include="flag_green.bmp" />
     <Resource Include="flag_green.ico" />
