@@ -6,10 +6,10 @@ public class Car
     public int RaceNumber { get; set; }
     public int CarModel { get; set; }
     public int CupCategory { get; set; }
-    public string CarGroup { get; set; }
-    public string TeamName { get; set; }
+    public string CarGroup { get; set; } = null!;
+    public string TeamName { get; set; } = null!;
     public int Nationality { get; set; }
     public int CarGuid { get; set; }
     public int TeamGuid { get; set; }
-    public List<Driver> Drivers { get; set; }
+    public List<Driver> Drivers { get; set; } = null!;
 }

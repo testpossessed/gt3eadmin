@@ -9,6 +9,9 @@ public class RaceSessionViewModel : ObservableObject
     private string driverFirstName;
     private string driverLastName;
     private string fastestLapTime;
+    private int finishPosition;
+    private int invalidLaps;
+    private int totalLaps;
 
     public RaceSessionViewModel(RaceSession raceSession)
     {
@@ -39,6 +42,16 @@ public class RaceSessionViewModel : ObservableObject
         set => this.SetProperty(ref this.fastestLapTime, value);
     }
 
+    public int FinishPosition
+    {
+        get => this.finishPosition;
+        set => this.SetProperty(ref this.finishPosition, value);
+    }
+
+    public int InvalidLaps { get => this.invalidLaps; set => this.SetProperty(ref this.invalidLaps, value); }
+
+    public int TotalLaps { get => this.totalLaps; set => this.SetProperty(ref this.totalLaps, value); }
+
     private void MapRaceSession(RaceSession raceSession)
     {
         var player = raceSession.GetPlayer();
@@ -49,5 +62,8 @@ public class RaceSessionViewModel : ObservableObject
         this.FastestLapTime = playerLeaderBoardLine.Timing.BestLapTime;
         this.AverageLapTime = playerLeaderBoardLine.Timing.AverageLapTime;
 
+        this.TotalLaps = raceSession.TotalLaps;
+        this.InvalidLaps = raceSession.InvalidLaps;
+        this.FinishPosition = raceSession.GetPlayerFinishPosition();
     }
 }

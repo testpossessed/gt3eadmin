@@ -3,7 +3,7 @@
   <PropertyGroup>
     <OutputType>WinExe</OutputType>
     <TargetFramework>net6.0-windows</TargetFramework>
-    <Nullable>enable</Nullable>
+    <Nullable>disable</Nullable>
     <UseWPF>true</UseWPF>
     <UserSecretsId>a8f417a5-c3c1-4b94-90ee-c56c49b81781</UserSecretsId>
     <PackageIcon>Icon.png</PackageIcon>

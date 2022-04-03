@@ -1,4 +1,5 @@
-﻿using System.Collections.ObjectModel;
+﻿using System;
+using System.Collections.ObjectModel;
 using System.IO;
 using System.Threading.Tasks;
 using System.Windows;
@@ -13,39 +14,59 @@ namespace GT3e.Admin.ViewModels;
 
 public class PendingVerificationTestsViewModel : ObservableObject
 {
+    private bool canReject;
     private RaceSessionViewModel currentRaceSession;
     private bool isLoadEnabled;
+    private string rejectionReason;
     private VerificationTestPackageInfo? selectedTest;
     private Visibility statsPanelVisibility;
 
     public PendingVerificationTestsViewModel()
     {
-        this.RefreshCommand = new RelayCommand(this.HandleRefreshCommand);
+        this.RefreshCommand = new AsyncRelayCommand(this.HandleRefreshCommand);
         this.LoadTestCommand = new AsyncRelayCommand(this.HandleLoadTestCommand);
+        this.AcceptCommand = new AsyncRelayCommand(this.HandleAcceptCommand);
+        this.RejectCommand = new AsyncRelayCommand(this.HandleRejectCommand);
         this.PendingTests = new ObservableCollection<VerificationTestPackageInfo>();
         this.StatsPanelVisibility = Visibility.Hidden;
         this.HandleRefreshCommand();
 
-        // var raceSession = AccDataProvider.LoadRaceSession(
-        //     @"C:\Users\contr\AppData\Local\GT3e.Admin\Downloads\VerificationTestPackages\76561197992680661\76561197992680661.json")!;
-        // this.CurrentRaceSession = new RaceSessionViewModel(raceSession);
+        var raceSession = AccDataProvider.LoadRaceSession(
+                @"C:\Users\contr\AppData\Local\GT3e.Admin\Downloads\VerificationTestPackages\76561198809612022\76561198809612022.json")
+            !;
+        this.CurrentRaceSession = new RaceSessionViewModel(raceSession);
     }
 
+    public IAsyncRelayCommand AcceptCommand { get; }
     public IAsyncRelayCommand LoadTestCommand { get; }
-
     public ObservableCollection<VerificationTestPackageInfo> PendingTests { get; }
-    public ICommand RefreshCommand { get; }
-
+    public IAsyncRelayCommand RefreshCommand { get; }
+    public IAsyncRelayCommand RejectCommand { get; }
+    public bool CanReject { get => this.canReject; set => this.SetProperty(ref this.canReject, value); }
     public RaceSessionViewModel CurrentRaceSession
     {
         get => this.currentRaceSession;
-        set => this.SetProperty(ref this.currentRaceSession, value);
+        set
+        {
+            this.SetProperty(ref this.currentRaceSession, value);
+            this.StatsPanelVisibility = value != null? Visibility.Visible : Visibility.Hidden;
+        }
     }
 
     public bool IsLoadEnabled
     {
         get => this.isLoadEnabled;
         set => this.SetProperty(ref this.isLoadEnabled, value);
+    }
+
+    public string RejectionReason
+    {
+        get => this.rejectionReason;
+        set
+        {
+            this.SetProperty(ref this.rejectionReason, value);
+            this.CanReject = !string.IsNullOrWhiteSpace(value);
+        }
     }
 
     public VerificationTestPackageInfo? SelectedTest
@@ -62,6 +83,41 @@ public class PendingVerificationTestsViewModel : ObservableObject
     {
         get => this.statsPanelVisibility;
         set => this.SetProperty(ref this.statsPanelVisibility, value);
+    }
+
+    private Task HandleAcceptCommand()
+    {
+        return this.SaveStats();
+    }
+
+    private async Task SaveStats(bool rejected = false)
+    {
+        if(this.SelectedTest != null)
+        {
+            var driverStats = await StorageProvider.GetDriverStats(this.SelectedTest.Name) ?? new DriverStats
+            {
+                SteamId = this.SelectedTest.Name,
+                FirstName = this.CurrentRaceSession.DriverFirstName,
+                LastName = this.CurrentRaceSession.DriverLastName
+            };
+
+            driverStats.AddVerificationTestAttempt(new VerificationTestAttempt
+            {
+                AverageLapTime = this.CurrentRaceSession.AverageLapTime,
+                FastestLapTime = this.CurrentRaceSession.FastestLapTime,
+                FinishPosition = this.CurrentRaceSession.FinishPosition,
+                InvalidLaps = this.CurrentRaceSession.InvalidLaps,
+                Rejected = rejected,
+                RejectionReason = this.RejectionReason,
+                ReviewDate = DateTime.Now,
+                TotalLaps = this.CurrentRaceSession.TotalLaps
+            });
+
+            await StorageProvider.UploadDriverStats(driverStats);
+            await StorageProvider.DeletePendingVerificationTest(this.SelectedTest);
+            this.CurrentRaceSession = null;
+            await this.HandleRefreshCommand();
+        }
     }
 
     private async Task HandleLoadTestCommand()
@@ -89,13 +145,20 @@ public class PendingVerificationTestsViewModel : ObservableObject
         ConsoleLog.Write("Replay has been copied as a Saved replay in ACC ready for you to review.");
     }
 
-    private void HandleRefreshCommand()
+    private async Task HandleRefreshCommand()
     {
-        var pendingTests = StorageProvider.GetPendingVerificationTests();
+        var pendingTests = await StorageProvider.GetPendingVerificationTests();
         this.PendingTests.Clear();
         foreach(var pendingTest in pendingTests)
         {
             this.PendingTests.Add(pendingTest);
         }
+
+        this.SelectedTest = this.PendingTests[0];
+    }
+
+    private Task HandleRejectCommand()
+    {
+        return this.SaveStats(true);
     }
 }
