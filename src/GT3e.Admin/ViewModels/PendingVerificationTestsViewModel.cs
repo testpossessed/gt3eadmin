@@ -3,7 +3,6 @@ using System.Collections.ObjectModel;
 using System.IO;
 using System.Threading.Tasks;
 using System.Windows;
-using System.Windows.Input;
 using GT3e.Acc;
 using GT3e.Admin.Models;
 using GT3e.Admin.Services;
@@ -30,11 +29,6 @@ public class PendingVerificationTestsViewModel : ObservableObject
         this.PendingTests = new ObservableCollection<VerificationTestPackageInfo>();
         this.StatsPanelVisibility = Visibility.Hidden;
         this.HandleRefreshCommand();
-
-        var raceSession = AccDataProvider.LoadRaceSession(
-                @"C:\Users\contr\AppData\Local\GT3e.Admin\Downloads\VerificationTestPackages\76561198809612022\76561198809612022.json")
-            !;
-        this.CurrentRaceSession = new RaceSessionViewModel(raceSession);
     }
 
     public IAsyncRelayCommand AcceptCommand { get; }
@@ -49,7 +43,7 @@ public class PendingVerificationTestsViewModel : ObservableObject
         set
         {
             this.SetProperty(ref this.currentRaceSession, value);
-            this.StatsPanelVisibility = value != null? Visibility.Visible : Visibility.Hidden;
+            this.StatsPanelVisibility = value != null? Visibility.Visible: Visibility.Hidden;
         }
     }
 
@@ -88,36 +82,6 @@ public class PendingVerificationTestsViewModel : ObservableObject
     private Task HandleAcceptCommand()
     {
         return this.SaveStats();
-    }
-
-    private async Task SaveStats(bool rejected = false)
-    {
-        if(this.SelectedTest != null)
-        {
-            var driverStats = await StorageProvider.GetDriverStats(this.SelectedTest.Name) ?? new DriverStats
-            {
-                SteamId = this.SelectedTest.Name,
-                FirstName = this.CurrentRaceSession.DriverFirstName,
-                LastName = this.CurrentRaceSession.DriverLastName
-            };
-
-            driverStats.AddVerificationTestAttempt(new VerificationTestAttempt
-            {
-                AverageLapTime = this.CurrentRaceSession.AverageLapTime,
-                FastestLapTime = this.CurrentRaceSession.FastestLapTime,
-                FinishPosition = this.CurrentRaceSession.FinishPosition,
-                InvalidLaps = this.CurrentRaceSession.InvalidLaps,
-                Rejected = rejected,
-                RejectionReason = this.RejectionReason,
-                ReviewDate = DateTime.Now,
-                TotalLaps = this.CurrentRaceSession.TotalLaps
-            });
-
-            await StorageProvider.UploadDriverStats(driverStats);
-            await StorageProvider.DeletePendingVerificationTest(this.SelectedTest);
-            this.CurrentRaceSession = null;
-            await this.HandleRefreshCommand();
-        }
     }
 
     private async Task HandleLoadTestCommand()
@@ -160,5 +124,35 @@ public class PendingVerificationTestsViewModel : ObservableObject
     private Task HandleRejectCommand()
     {
         return this.SaveStats(true);
+    }
+
+    private async Task SaveStats(bool rejected = false)
+    {
+        if(this.SelectedTest != null)
+        {
+            var driverStats = await StorageProvider.GetDriverStats(this.SelectedTest.Name) ?? new DriverStats
+            {
+                SteamId = this.SelectedTest.Name,
+                FirstName = this.CurrentRaceSession.DriverFirstName,
+                LastName = this.CurrentRaceSession.DriverLastName
+            };
+
+            driverStats.AddVerificationTestAttempt(new VerificationTestAttempt
+            {
+                AverageLapTime = this.CurrentRaceSession.AverageLapTime,
+                FastestLapTime = this.CurrentRaceSession.FastestLapTime,
+                FinishPosition = this.CurrentRaceSession.FinishPosition,
+                InvalidLaps = this.CurrentRaceSession.InvalidLaps,
+                Rejected = rejected,
+                RejectionReason = this.RejectionReason,
+                ReviewDate = DateTime.Now,
+                TotalLaps = this.CurrentRaceSession.TotalLaps
+            });
+
+            await StorageProvider.UploadDriverStats(driverStats);
+            await StorageProvider.DeletePendingVerificationTest(this.SelectedTest);
+            this.CurrentRaceSession = null;
+            await this.HandleRefreshCommand();
+        }
     }
 }

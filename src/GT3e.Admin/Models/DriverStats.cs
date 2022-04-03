@@ -9,6 +9,8 @@ public class DriverStats
         this.VerificationTestAttempts = new List<VerificationTestAttempt>();
     }
 
+    public string FullName => $"{this.FirstName} {this.LastName}";
+
     public string FirstName { get; set; }
     public string LastName { get; set; }
     public string SteamId { get; set; }

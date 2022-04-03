@@ -46,7 +46,10 @@
 
         <sf:TabControlExt Name="tabControlExt">
             <sf:TabItemExt Header="Pending Verification Tests">
-                <views:PendingVerificationTests DataContext="{Binding PendingVerificationTests}"></views:PendingVerificationTests>
+                <views:PendingVerificationTests DataContext="{Binding PendingVerificationTests}"/>
+            </sf:TabItemExt>
+            <sf:TabItemExt Header="Driver Stats">
+                <views:DriverStats DataContext="{Binding DriverStats}"/>
             </sf:TabItemExt>
         </sf:TabControlExt>
     </DockPanel>

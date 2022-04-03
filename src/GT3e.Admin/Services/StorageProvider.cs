@@ -2,9 +2,11 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Runtime.InteropServices.ComTypes;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+using System.Windows.Navigation;
 using Azure.Storage;
 using Azure.Storage.Blobs;
 using Azure.Storage.Blobs.Models;
@@ -24,6 +26,32 @@ internal class StorageProvider
         var pages = blobContainerClient.GetBlobs().AsPages();
 
         return Task.FromResult<IEnumerable<VerificationTestPackageInfo>>((from page in pages from item in page.Values select new VerificationTestPackageInfo(item.Name)).ToList());
+    }
+
+    internal static async Task<IEnumerable<DriverStats>> GetDriverStats()
+    {
+        var result = new List<DriverStats>();
+        var systemSettings = SettingsProvider.GetSystemSettings();
+
+        var blobContainerClient =
+            new BlobContainerClient(systemSettings.StorageConnectionString, "driver-stats");
+        var pages = blobContainerClient.GetBlobs()
+                                       .AsPages();
+
+        foreach(var page in pages)
+        {
+            foreach(var item in page.Values)
+            {
+                var blobClient = blobContainerClient.GetBlobClient(item.Name);
+                var blob = await blobClient.DownloadAsync();
+                using var reader = new StreamReader(blob.Value.Content);
+                var json = await reader.ReadToEndAsync();
+                var driverStats = JsonConvert.DeserializeObject<DriverStats>(json);
+                result.Add(driverStats);
+            }
+        }
+
+        return result;
     }
 
     internal static async Task<string> GetPendingVerificationTest(VerificationTestPackageInfo testInfo)
