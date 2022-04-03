@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.ObjectModel;
 using System.IO;
+using System.Linq;
 using System.Threading.Tasks;
 using System.Windows;
 using GT3e.Acc;
@@ -118,6 +119,10 @@ public class PendingVerificationTestsViewModel : ObservableObject
             this.PendingTests.Add(pendingTest);
         }
 
+        if(!this.PendingTests.Any())
+        {
+            return;
+        }
         this.SelectedTest = this.PendingTests[0];
     }
 

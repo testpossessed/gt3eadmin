@@ -20,7 +20,7 @@ public class MainViewModel : ObservableRecipient
     }
 
     public ConsoleViewModel Console { get; } = new();
-    public DriverStats DriverStats { get; } = new();
+    public DriverStatsViewModel DriverStats { get; } = new();
     public PendingVerificationTestsViewModel PendingVerificationTests { get; } = new();
     public List<string> Themes { get; } = new()
     {

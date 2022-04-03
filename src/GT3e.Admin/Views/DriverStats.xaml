@@ -27,7 +27,7 @@
                        Grid.Column="0"
                        Grid.ColumnSpan="2">
 
-            <Button>
+            <Button Command="{Binding RefreshCommand}">
                 <Image Source="/GT3e.Admin;component/Restore.ico"
                        Width="32"
                        Height="32" />
@@ -96,6 +96,9 @@
                            Grid.Row="0"
                            Text="{Binding SelectedStats.LastName}" />
 
+                <sf:SfDataGrid Grid.Column="0" Grid.Row="1" Grid.ColumnSpan="4" x:Name="dataGrid"
+                                       AutoGenerateColumns="True"
+                                       ItemsSource="{Binding SelectedStats.VerificationTestAttempts}" />
             
             </Grid>
 

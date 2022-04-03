@@ -27,7 +27,7 @@
                        Grid.Column="0"
                        Grid.ColumnSpan="2">
 
-            <Button>
+            <Button Command="{Binding RefreshCommand}">
                 <Image Source="/GT3e.Admin;component/Restore.ico"
                        Width="32"
                        Height="32" />

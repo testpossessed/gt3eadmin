@@ -7,8 +7,19 @@ public class AccDataProvider
 {
     public static RaceSession? LoadRaceSession(string filePath)
     {
-        var json = CleanJson(File.ReadAllText(filePath));
-        return JsonConvert.DeserializeObject<RaceSession>(json);
+        Thread.Sleep(1000);
+        try
+        {
+            var fileContent = File.ReadAllText(filePath);
+            var json = CleanJson(fileContent);
+            return JsonConvert.DeserializeObject<RaceSession>(json);
+        }
+        catch(Exception e)
+        {
+            Console.WriteLine(e);
+            throw;
+        }
+       
     }
 
     private static string CleanJson(string json)
