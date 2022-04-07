@@ -236,4 +236,75 @@ internal class StorageProvider
         LogWriter.Info(message);
         ConsoleLog.Write(message);
     }
+
+    public static async Task DownloadCustomSkin(CustomSkinInfo customSkin)
+    {
+        var message = $"Downloading {customSkin.FileName}";
+        LogWriter.Info(message);
+        ConsoleLog.Write($"{message}...");
+
+        var systemSettings = SettingsProvider.GetSystemSettings();
+
+        var blobContainerClient =
+            new BlobContainerClient(systemSettings.StorageConnectionString, "custom-skins");
+
+        var blobClient = blobContainerClient.GetBlobClient(customSkin.FileName);
+      
+        var packageDownloadFilePath = Path.Combine(PathProvider.AppDocumentsDownloadFolderPath, customSkin.FileName);
+
+        if (File.Exists(packageDownloadFilePath))
+        {
+            File.Delete(packageDownloadFilePath);
+        }
+
+
+        var progressHandler = new Progress<long>();
+        var lastProgress = 0D;
+        var totalBytes = (await blobClient.GetPropertiesAsync()).Value.ContentLength;
+        progressHandler.ProgressChanged += (sender, bytesUploaded) =>
+        {
+            if (bytesUploaded <= 0)
+            {
+                return;
+            }
+
+            var progress =
+                Math.Floor((double)bytesUploaded / totalBytes * 100);
+            if (progress > lastProgress && progress % 10 == 0)
+            {
+                ConsoleLog.Write($"Downloaded {progress}%...");
+            }
+
+            lastProgress = progress;
+        };
+
+        var options = new BlobDownloadToOptions
+        {
+            ProgressHandler = progressHandler,
+            TransferOptions = new StorageTransferOptions
+            {
+                MaximumTransferSize = 4 * 1024 * 1024,
+                InitialTransferSize = 4 * 1024 * 1024
+            }
+
+        };
+        await blobClient.DownloadToAsync(packageDownloadFilePath, options, CancellationToken.None);
+        message = $"Skin package downloaded to {packageDownloadFilePath}";
+        LogWriter.Info(message);
+        ConsoleLog.Write(message);
+    }
+
+    public static Task<IEnumerable<CustomSkinInfo>> GetCustomSkins()
+    {
+        var systemSettings = SettingsProvider.GetSystemSettings();
+
+        var blobContainerClient =
+            new BlobContainerClient(systemSettings.StorageConnectionString, "custom-skins");
+        var pages = blobContainerClient.GetBlobs()
+                                       .AsPages();
+
+        return Task.FromResult<IEnumerable<CustomSkinInfo>>(
+            (from page in pages from item in page.Values select new CustomSkinInfo(item.Name))
+            .ToList());
+    }
 }

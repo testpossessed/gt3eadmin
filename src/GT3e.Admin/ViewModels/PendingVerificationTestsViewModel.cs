@@ -28,8 +28,8 @@ public class PendingVerificationTestsViewModel : ObservableObject
         this.AcceptCommand = new AsyncRelayCommand(this.HandleAcceptCommand);
         this.RejectCommand = new AsyncRelayCommand(this.HandleRejectCommand);
         this.PendingTests = new ObservableCollection<VerificationTestPackageInfo>();
-        this.StatsPanelVisibility = Visibility.Hidden;
-        this.HandleRefreshCommand();
+        this.StatsPanelVisibility = Visibility.Collapsed;
+        this.HandleRefreshCommand().GetAwaiter().GetResult();
     }
 
     public IAsyncRelayCommand AcceptCommand { get; }
@@ -105,7 +105,7 @@ public class PendingVerificationTestsViewModel : ObservableObject
         ConsoleLog.Write("Copying replay to ACC...");
         var replayFilePath = packageDownloadFilePath.Replace("zip", "rpy");
         var destinationFilePath =
-            Path.Combine(PathProvider.AccSavedReplaysFolderPath, $"{this.SelectedTest.Name}.rpy");
+            Path.Combine(AccPathProvider.SavedReplaysFolderPath, $"{this.SelectedTest.Name}.rpy");
         File.Copy(replayFilePath, destinationFilePath, true);
         ConsoleLog.Write("Replay has been copied as a Saved replay in ACC ready for you to review.");
     }

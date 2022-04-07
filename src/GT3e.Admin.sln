@@ -10,7 +10,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		..\.gitignore = ..\.gitignore
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GT3e.Acc", "GT3e.Admin.Acc\GT3e.Acc.csproj", "{886F57D6-1DC0-4482-B361-D3126C23D6FF}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GT3e.Acc", "GT3e.Acc\GT3e.Acc.csproj", "{886F57D6-1DC0-4482-B361-D3126C23D6FF}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

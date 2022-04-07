@@ -509,7 +509,8 @@
       "System.Threading.Tasks.Extensions/4.5.4": {},
       "GT3e.Acc/1.0.0": {
         "dependencies": {
-          "Newtonsoft.Json": "13.0.1"
+          "Newtonsoft.Json": "13.0.1",
+          "System.Reactive": "5.0.0"
         },
         "runtime": {
           "GT3e.Acc.dll": {}

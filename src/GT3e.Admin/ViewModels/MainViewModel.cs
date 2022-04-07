@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Windows;
 using GT3e.Admin.Models;
 using GT3e.Admin.Services;
@@ -22,6 +23,8 @@ public class MainViewModel : ObservableRecipient
     public ConsoleViewModel Console { get; } = new();
     public DriverStatsViewModel DriverStats { get; } = new();
     public PendingVerificationTestsViewModel PendingVerificationTests { get; } = new();
+    public CustomSkinsViewModel CustomSkins { get; } = new();
+    
     public List<string> Themes { get; } = new()
     {
         "Blend",
@@ -68,7 +71,15 @@ public class MainViewModel : ObservableRecipient
 
     private void Initialise()
     {
-        var settings = SettingsProvider.GetUserSettings();
+        if(!Directory.Exists(PathProvider.AppDocumentsFolderPath))
+        {
+            Directory.CreateDirectory(PathProvider.AppDocumentsFolderPath);
+        }
+
+        if(!Directory.Exists(PathProvider.AppDocumentsDownloadFolderPath))
+        {
+            Directory.CreateDirectory(PathProvider.AppDocumentsDownloadFolderPath);
+        }
     }
 
     private void SetInitialTheme()

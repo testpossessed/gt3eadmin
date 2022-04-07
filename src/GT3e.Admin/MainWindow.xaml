@@ -44,12 +44,15 @@
         <views:Console DockPanel.Dock="Bottom"
                    DataContext="{Binding Console}" />
 
-        <sf:TabControlExt Name="tabControlExt">
+        <sf:TabControlExt>
             <sf:TabItemExt Header="Pending Verification Tests">
                 <views:PendingVerificationTests DataContext="{Binding PendingVerificationTests}"/>
             </sf:TabItemExt>
             <sf:TabItemExt Header="Driver Stats">
                 <views:DriverStats DataContext="{Binding DriverStats}"/>
+            </sf:TabItemExt>
+            <sf:TabItemExt Header="Skins">
+                <views:CustomSkins DataContext="{Binding CustomSkins}" />
             </sf:TabItemExt>
         </sf:TabControlExt>
     </DockPanel>
