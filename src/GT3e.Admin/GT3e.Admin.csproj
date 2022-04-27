@@ -51,7 +51,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\GT3e.Acc\GT3e.Acc.csproj" />
+    <ProjectReference Include="..\..\acclib\Acc.Lib.csproj" />
   </ItemGroup>
 
   <ItemGroup>

@@ -1,10 +1,6 @@
-﻿using System;
-using System.Collections.ObjectModel;
-using System.IO;
-using System.Linq;
+﻿using System.Collections.ObjectModel;
 using System.Threading.Tasks;
 using System.Windows;
-using GT3e.Acc;
 using GT3e.Admin.Models;
 using GT3e.Admin.Services;
 using Microsoft.Toolkit.Mvvm.ComponentModel;
@@ -14,58 +10,57 @@ namespace GT3e.Admin.ViewModels;
 
 public class CustomSkinsViewModel : ObservableObject
 {
-    private RaceSessionViewModel currentRaceSession;
-    private bool isDownloadEnabled;
-    private string rejectionReason;
-    private CustomSkinInfo? selectedSkin;
-    private Visibility statsPanelVisibility;
+  private RaceSessionViewModel currentRaceSession;
+  private bool isDownloadEnabled;
+  private CustomSkinInfo? selectedSkin;
 
-    public CustomSkinsViewModel()
-    {
-        this.RefreshCommand = new AsyncRelayCommand(this.HandleRefreshCommand);
-        this.DownloadCommand = new AsyncRelayCommand(this.HandleDownloadCommand);
-        this.Skins = new ObservableCollection<CustomSkinInfo>();
-        this.HandleRefreshCommand().GetAwaiter().GetResult();
-    }
+  public CustomSkinsViewModel()
+  {
+    this.RefreshCommand = new AsyncRelayCommand(this.HandleRefreshCommand);
+    this.DownloadCommand = new AsyncRelayCommand(this.HandleDownloadCommand);
+    this.Skins = new ObservableCollection<CustomSkinInfo>();
+    // this.HandleRefreshCommand()
+    //     .GetAwaiter()
+    //     .GetResult();
+  }
 
-    public IAsyncRelayCommand DownloadCommand { get; }
-    public ObservableCollection<CustomSkinInfo> Skins { get; }
-    public IAsyncRelayCommand RefreshCommand { get; }
-    public RaceSessionViewModel CurrentRaceSession
-    {
-        get => this.currentRaceSession;
-        set => this.SetProperty(ref this.currentRaceSession, value);
-    }
+  public IAsyncRelayCommand DownloadCommand { get; }
+  public IAsyncRelayCommand RefreshCommand { get; }
+  public ObservableCollection<CustomSkinInfo> Skins { get; }
+  public RaceSessionViewModel CurrentRaceSession
+  {
+    get => this.currentRaceSession;
+    set => this.SetProperty(ref this.currentRaceSession, value);
+  }
 
-    public bool IsDownloadEnabled
-    {
-        get => this.isDownloadEnabled;
-        set => this.SetProperty(ref this.isDownloadEnabled, value);
-    }
+  public bool IsDownloadEnabled
+  {
+    get => this.isDownloadEnabled;
+    set => this.SetProperty(ref this.isDownloadEnabled, value);
+  }
 
-    
-    public CustomSkinInfo? SelectedSkin
+  public CustomSkinInfo? SelectedSkin
+  {
+    get => this.selectedSkin;
+    set
     {
-        get => this.selectedSkin;
-        set
-        {
-            this.SetProperty(ref this.selectedSkin, value);
-            this.IsDownloadEnabled = value != null;
-        }
+      this.SetProperty(ref this.selectedSkin, value);
+      this.IsDownloadEnabled = value != null;
     }
+  }
 
-    private async Task HandleDownloadCommand()
-    {
-        await StorageProvider.DownloadCustomSkin(this.selectedSkin);
-    }
+  private async Task HandleDownloadCommand()
+  {
+    await StorageProvider.DownloadCustomSkin(this.selectedSkin);
+  }
 
-    private async Task HandleRefreshCommand()
+  private async Task HandleRefreshCommand()
+  {
+    var customSkins = await StorageProvider.GetCustomSkins();
+    this.Skins.Clear();
+    foreach(var customSkin in customSkins)
     {
-        var customSkins = await StorageProvider.GetCustomSkins();
-        this.Skins.Clear();
-        foreach(var customSkin in customSkins)
-        {
-            this.Skins.Add(customSkin);
-        }
+      this.Skins.Add(customSkin);
     }
+  }
 }

@@ -1,4 +1,4 @@
-﻿using GT3e.Acc.Models.RaceResult;
+﻿using Acc.Lib.Models.RaceResult;
 using Microsoft.Toolkit.Mvvm.ComponentModel;
 
 namespace GT3e.Admin.ViewModels;
