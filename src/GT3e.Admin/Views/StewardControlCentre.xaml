@@ -4,10 +4,20 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:vm="clr-namespace:GT3e.Admin.ViewModels"
+             xmlns:scm="clr-namespace:System.ComponentModel;assembly=WindowsBase"
              mc:Ignorable="d"
              d:DesignHeight="450"
              d:DesignWidth="800"
              d:DataContext="{d:DesignInstance Type=vm:StewardControlCentreViewModel}">
+  <UserControl.Resources>
+    <CollectionViewSource x:Key='DriversSource'
+                          Source="{Binding Drivers}">
+      <CollectionViewSource.SortDescriptions>
+        <scm:SortDescription PropertyName="Position" />
+      </CollectionViewSource.SortDescriptions>
+
+    </CollectionViewSource>
+  </UserControl.Resources>
   <Grid VerticalAlignment="Stretch">
 
     <Grid.ColumnDefinitions>
@@ -127,10 +137,24 @@
     </Grid>
 
 
-    <ListBox Grid.Column="2"
+    <ListView Grid.Column="2"
              HorizontalAlignment="Stretch"
              VerticalAlignment="Stretch"
-             ItemsSource="{Binding Drivers}"
-             DisplayMemberPath="DisplayName" />
+             ItemsSource="{Binding Source={StaticResource DriversSource}}">
+      <ListView.View>
+        <GridView AllowsColumnReorder="False" ColumnHeaderToolTip="Driver Standings">
+          <GridViewColumn DisplayMemberBinding="{Binding Path=Position}"
+                          Header="Pos."
+                          Width="Auto" />
+          <GridViewColumn DisplayMemberBinding="{Binding Path=DisplayName}"
+                          Header="Driver"
+                          Width="150" />
+          <GridViewColumn DisplayMemberBinding="{Binding Path=RaceNumber}"
+                          Header="#"
+                          Width="Auto" />
+
+        </GridView>
+      </ListView.View>
+    </ListView>
   </Grid>
 </UserControl>

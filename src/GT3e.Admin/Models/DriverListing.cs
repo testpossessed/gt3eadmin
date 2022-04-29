@@ -5,5 +5,6 @@ public class DriverListing
   public int CarIndex { get; set; }
   public byte CarModel { get; set; }
   public string DisplayName { get; set; }
+  public int Position { get; set; }
   public int RaceNumber { get; set; }
 }

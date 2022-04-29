@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
+using System.Linq;
 using System.Reactive.Disposables;
 using System.Threading.Tasks;
 using System.Windows;
@@ -37,6 +38,8 @@ public class StewardControlCentreViewModel : ObservableObject
     this.PropertyChanged += this.HandlePropertyChanged;
   }
 
+  public ObservableCollection<DriverListing> Drivers { get; } = new();
+
   public IAsyncRelayCommand StartCommand { get; }
 
   public IAsyncRelayCommand StopCommand { get; }
@@ -57,8 +60,6 @@ public class StewardControlCentreViewModel : ObservableObject
         this.ConnectToLocalInstance? Visibility.Collapsed: Visibility.Visible;
     }
   }
-
-  public ObservableCollection<DriverListing> Drivers { get; } = new();
 
   public string Host
   {
@@ -95,6 +96,12 @@ public class StewardControlCentreViewModel : ObservableObject
 
   private void HandleBroadcastingEvents(BroadcastingEvent message)
   {
+    AccLog.Log(new AccEvent
+               {
+                 MessageType = InboundMessageTypes.BroadcastingEvent,
+                 BroadcastingEventType = message.BroadcastingEventType,
+                 Message = message
+               });
     this.LogMessage(message.ToString());
   }
 
@@ -109,17 +116,6 @@ public class StewardControlCentreViewModel : ObservableObject
     this.UpdateDriverListings(message);
   }
 
-  private void UpdateDriverListings(EntryListUpdate message)
-  {
-    this.Drivers.Add(new DriverListing
-                     {
-                      CarModel = message.CarInfo.CarModelType,
-                      CarIndex = message.CarInfo.CarIndex,
-                      DisplayName = message.CarInfo.GetCurrentDisplayName(),
-                      RaceNumber = message.CarInfo.RaceNumber
-                     });
-  }
-
   private void HandlePropertyChanged(object? sender, PropertyChangedEventArgs eventArgs)
   {
     this.UpdateCommandState();
@@ -127,11 +123,22 @@ public class StewardControlCentreViewModel : ObservableObject
 
   private void HandleRealTimeCarUpdates(RealtimeCarUpdate message)
   {
+    AccLog.Log(new AccEvent
+               {
+                 MessageType = InboundMessageTypes.RealtimeCarUpdate,
+                 Message = message
+               });
     this.LogMessage(message.ToString());
+    this.UpdateDriverListings(message);
   }
 
   private void HandleRealTimeUpdates(RealtimeUpdate message)
   {
+    AccLog.Log(new AccEvent
+               {
+                 MessageType = InboundMessageTypes.RealtimeUpdate,
+                 Message = message
+               });
     this.LogMessage(message.ToString());
   }
 
@@ -168,6 +175,11 @@ public class StewardControlCentreViewModel : ObservableObject
 
   private void HandleTrackDataUpdates(TrackDataUpdate message)
   {
+    AccLog.Log(new AccEvent
+               {
+                 MessageType = InboundMessageTypes.TrackData,
+                 Message = message
+               });
     this.LogMessage(message.ToString());
   }
 
@@ -219,5 +231,28 @@ public class StewardControlCentreViewModel : ObservableObject
   {
     this.StartCommand.NotifyCanExecuteChanged();
     this.StopCommand.NotifyCanExecuteChanged();
+  }
+
+  private void UpdateDriverListings(EntryListUpdate message)
+  {
+    this.Drivers.Add(new DriverListing
+                     {
+                       CarModel = message.CarInfo.CarModelType,
+                       CarIndex = message.CarInfo.CarIndex,
+                       DisplayName = message.CarInfo.GetCurrentDisplayName(),
+                       Position = message.CarInfo.CarIndex + 1,
+                       RaceNumber = message.CarInfo.RaceNumber
+                     });
+  }
+
+  private void UpdateDriverListings(RealtimeCarUpdate message)
+  {
+    var driverListing = this.Drivers.FirstOrDefault(e => e.CarIndex == message.CarIndex);
+    if(driverListing == null)
+    {
+      return;
+    }
+
+    driverListing.Position = message.Position;
   }
 }
