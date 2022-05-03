@@ -4,7 +4,7 @@ using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows;
-using GT3e.Acc;
+using Acc.Lib;
 using GT3e.Admin.Models;
 using GT3e.Admin.Services;
 using Microsoft.Toolkit.Mvvm.ComponentModel;
@@ -18,7 +18,7 @@ public class PendingVerificationTestsViewModel : ObservableObject
     private RaceSessionViewModel currentRaceSession;
     private bool isLoadEnabled;
     private string rejectionReason;
-    private VerificationTestPackageInfo? selectedTest;
+    private VerificationTestPackageInfo selectedTest;
     private Visibility statsPanelVisibility;
 
     public PendingVerificationTestsViewModel()
@@ -29,7 +29,7 @@ public class PendingVerificationTestsViewModel : ObservableObject
         this.RejectCommand = new AsyncRelayCommand(this.HandleRejectCommand);
         this.PendingTests = new ObservableCollection<VerificationTestPackageInfo>();
         this.StatsPanelVisibility = Visibility.Collapsed;
-        this.HandleRefreshCommand().GetAwaiter().GetResult();
+        // this.HandleRefreshCommand().GetAwaiter().GetResult();
     }
 
     public IAsyncRelayCommand AcceptCommand { get; }
@@ -64,7 +64,7 @@ public class PendingVerificationTestsViewModel : ObservableObject
         }
     }
 
-    public VerificationTestPackageInfo? SelectedTest
+    public VerificationTestPackageInfo SelectedTest
     {
         get => this.selectedTest;
         set

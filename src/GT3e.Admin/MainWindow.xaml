@@ -42,9 +42,9 @@
             </StatusBarItem>
         </StatusBar>
         <views:Console DockPanel.Dock="Bottom"
-                   DataContext="{Binding Console}" />
+                   DataContext="{Binding Console}" Visibility="{Binding ConsoleVisibility}" />
 
-        <sf:TabControlExt>
+        <sf:TabControlExt SelectedIndex="{Binding SelectedTabIndex, Mode=TwoWay}">
             <sf:TabItemExt Header="Pending Verification Tests">
                 <views:PendingVerificationTests DataContext="{Binding PendingVerificationTests}"/>
             </sf:TabItemExt>
@@ -54,6 +54,12 @@
             <sf:TabItemExt Header="Skins">
                 <views:CustomSkins DataContext="{Binding CustomSkins}" />
             </sf:TabItemExt>
+          <sf:TabItemExt Header="Steward Control Centre">
+            <views:StewardControlCentre DataContext="{Binding StewardControlCentre}" />
+          </sf:TabItemExt>
+          <sf:TabItemExt Header="Log">
+            <views:Log DataContext="{Binding Log}" />
+          </sf:TabItemExt>
         </sf:TabControlExt>
     </DockPanel>
 </sf:ChromelessWindow>

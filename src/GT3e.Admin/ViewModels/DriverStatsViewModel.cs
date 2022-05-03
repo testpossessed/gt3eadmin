@@ -19,7 +19,7 @@ public class DriverStatsViewModel : ObservableObject
         this.RefreshCommand = new AsyncRelayCommand(this.HandleRefreshCommand);
         this.DriverStatsList = new ObservableCollection<DriverStats>();
         this.StatsPanelVisibility = Visibility.Collapsed;
-        this.HandleRefreshCommand();
+        // this.HandleRefreshCommand();
     }
 
     public ObservableCollection<DriverStats> DriverStatsList { get; }
