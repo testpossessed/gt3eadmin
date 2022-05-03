@@ -8,8 +8,8 @@
     ".NETCoreApp,Version=v6.0": {
       "GT3e.Admin/1.0.0": {
         "dependencies": {
-          "Azure.Storage.Blobs": "12.11.0",
-          "GT3e.Acc": "1.0.0",
+          "Acc.Lib": "1.0.0",
+          "Azure.Storage.Blobs": "12.12.0",
           "Microsoft.Extensions.Configuration": "6.0.1",
           "Microsoft.Extensions.Configuration.Abstractions": "6.0.0",
           "Microsoft.Extensions.Configuration.EnvironmentVariables": "6.0.1",
@@ -36,7 +36,19 @@
           "GT3e.Admin.dll": {}
         }
       },
-      "Azure.Core/1.22.0": {
+      "Acc.Lib/1.0.0": {
+        "dependencies": {
+          "Newtonsoft.Json": "13.0.1",
+          "System.Reactive": "5.0.0"
+        },
+        "runtime": {
+          "lib/net6.0/Acc.Lib.dll": {
+            "assemblyVersion": "1.0.0.0",
+            "fileVersion": "1.0.0.0"
+          }
+        }
+      },
+      "Azure.Core/1.24.0": {
         "dependencies": {
           "Microsoft.Bcl.AsyncInterfaces": "1.1.1",
           "System.Diagnostics.DiagnosticSource": "4.6.0",
@@ -48,32 +60,32 @@
         },
         "runtime": {
           "lib/net5.0/Azure.Core.dll": {
-            "assemblyVersion": "1.22.0.0",
-            "fileVersion": "1.2200.22.6212"
+            "assemblyVersion": "1.24.0.0",
+            "fileVersion": "1.2400.22.20404"
           }
         }
       },
-      "Azure.Storage.Blobs/12.11.0": {
+      "Azure.Storage.Blobs/12.12.0": {
         "dependencies": {
-          "Azure.Storage.Common": "12.10.0",
+          "Azure.Storage.Common": "12.11.0",
           "System.Text.Json": "6.0.0"
         },
         "runtime": {
           "lib/netstandard2.0/Azure.Storage.Blobs.dll": {
-            "assemblyVersion": "12.11.0.0",
-            "fileVersion": "12.1100.22.16003"
+            "assemblyVersion": "12.12.0.0",
+            "fileVersion": "12.1200.22.25202"
           }
         }
       },
-      "Azure.Storage.Common/12.10.0": {
+      "Azure.Storage.Common/12.11.0": {
         "dependencies": {
-          "Azure.Core": "1.22.0",
+          "Azure.Core": "1.24.0",
           "System.IO.Hashing": "6.0.0"
         },
         "runtime": {
           "lib/netstandard2.0/Azure.Storage.Common.dll": {
-            "assemblyVersion": "12.10.0.0",
-            "fileVersion": "12.1000.22.16003"
+            "assemblyVersion": "12.11.0.0",
+            "fileVersion": "12.1100.22.25202"
           }
         }
       },
@@ -506,16 +518,7 @@
           "System.Text.Encodings.Web": "6.0.0"
         }
       },
-      "System.Threading.Tasks.Extensions/4.5.4": {},
-      "GT3e.Acc/1.0.0": {
-        "dependencies": {
-          "Newtonsoft.Json": "13.0.1",
-          "System.Reactive": "5.0.0"
-        },
-        "runtime": {
-          "GT3e.Acc.dll": {}
-        }
-      }
+      "System.Threading.Tasks.Extensions/4.5.4": {}
     }
   },
   "libraries": {
@@ -524,26 +527,33 @@
       "serviceable": false,
       "sha512": ""
     },
-    "Azure.Core/1.22.0": {
+    "Acc.Lib/1.0.0": {
       "type": "package",
       "serviceable": true,
-      "sha512": "sha512-ze/xRCHSSDe5TIk5vBDbVrauW1EN7UIbnBvIBfMH8KSt/I9+/7yPAjTBDgNBk0IwG6WBV+BBHp4IUtS/PGAQwQ==",
-      "path": "azure.core/1.22.0",
-      "hashPath": "azure.core.1.22.0.nupkg.sha512"
+      "sha512": "sha512-xlXbh1g29sx0fRe5Kv/OTCkjlj6Y78JpdJWEWqh5gWCm9WARhoL5vT6BbBlpzzfzZWZNjzX50gifZq0iMTaPLA==",
+      "path": "acc.lib/1.0.0",
+      "hashPath": "acc.lib.1.0.0.nupkg.sha512"
     },
-    "Azure.Storage.Blobs/12.11.0": {
+    "Azure.Core/1.24.0": {
       "type": "package",
       "serviceable": true,
-      "sha512": "sha512-50eRjIhY7Q1JN7kT2MSawDKCcwSb7uRZUkz00P/BLjSg47gm2hxUYsnJPyvzCHntYMbOWzrvaVQTwYwXabaR5Q==",
-      "path": "azure.storage.blobs/12.11.0",
-      "hashPath": "azure.storage.blobs.12.11.0.nupkg.sha512"
+      "sha512": "sha512-+/qI1j2oU1S4/nvxb2k/wDsol00iGf1AyJX5g3epV7eOpQEP/2xcgh/cxgKMeFgn3U2fmgSiBnQZdkV+l5y0Uw==",
+      "path": "azure.core/1.24.0",
+      "hashPath": "azure.core.1.24.0.nupkg.sha512"
     },
-    "Azure.Storage.Common/12.10.0": {
+    "Azure.Storage.Blobs/12.12.0": {
       "type": "package",
       "serviceable": true,
-      "sha512": "sha512-vYkHGzUkdZTace/cDPZLG+Mh/EoPqQuGxDIBOau9D+XWoDPmuUFGk325aXplkFE4JFGpSwoytNYzk/qBCaiHqg==",
-      "path": "azure.storage.common/12.10.0",
-      "hashPath": "azure.storage.common.12.10.0.nupkg.sha512"
+      "sha512": "sha512-DYirbNIkP2KeCz+/7AP9Un8GkrmSfHSSE+J0k4pyIlI5d8wVWndZj5Pp74rNsgjE/jDRdr3dIhJHPQwHE4ifAg==",
+      "path": "azure.storage.blobs/12.12.0",
+      "hashPath": "azure.storage.blobs.12.12.0.nupkg.sha512"
+    },
+    "Azure.Storage.Common/12.11.0": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-BPZ1JwYvehHGoTSXhXfAmwtFYejJghE6dkKvpZtPIL0DulzSIJdll9OZI+h5W+3wLYK0yn5hc1r6mvId0q4npA==",
+      "path": "azure.storage.common/12.11.0",
+      "hashPath": "azure.storage.common.12.11.0.nupkg.sha512"
     },
     "Microsoft.Bcl.AsyncInterfaces/1.1.1": {
       "type": "package",
@@ -852,11 +862,6 @@
       "sha512": "sha512-zteT+G8xuGu6mS+mzDzYXbzS7rd3K6Fjb9RiZlYlJPam2/hU7JCBZBVEcywNuR+oZ1ncTvc/cq0faRr3P01OVg==",
       "path": "system.threading.tasks.extensions/4.5.4",
       "hashPath": "system.threading.tasks.extensions.4.5.4.nupkg.sha512"
-    },
-    "GT3e.Acc/1.0.0": {
-      "type": "project",
-      "serviceable": false,
-      "sha512": ""
     }
   }
 }
