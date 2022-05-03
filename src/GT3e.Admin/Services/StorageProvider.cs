@@ -137,7 +137,7 @@ internal class StorageProvider
         ConsoleLog.Write(message);
     }
 
-    internal static async Task<DriverStats?> GetDriverStats(string steamId)
+    internal static async Task<DriverStats> GetDriverStats(string steamId)
     {
         var message = $"Downloading any existing driver stats";
         LogWriter.Info(message);

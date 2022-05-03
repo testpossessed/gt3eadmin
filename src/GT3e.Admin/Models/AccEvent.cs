@@ -14,6 +14,6 @@ public class AccEvent
   public DateTime Timestamp { get; }
   public BroadcastingEventType BroadcastingEventType { get; set; }
   public object Message { get; set; }
-  public InboundMessageTypes MessageType { get; set; }
+  public InboundMessageType MessageType { get; set; }
   public string Json  => JsonConvert.SerializeObject(Message, Formatting.Indented);
 }

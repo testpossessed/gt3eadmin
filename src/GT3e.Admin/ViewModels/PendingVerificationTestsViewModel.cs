@@ -18,7 +18,7 @@ public class PendingVerificationTestsViewModel : ObservableObject
     private RaceSessionViewModel currentRaceSession;
     private bool isLoadEnabled;
     private string rejectionReason;
-    private VerificationTestPackageInfo? selectedTest;
+    private VerificationTestPackageInfo selectedTest;
     private Visibility statsPanelVisibility;
 
     public PendingVerificationTestsViewModel()
@@ -64,7 +64,7 @@ public class PendingVerificationTestsViewModel : ObservableObject
         }
     }
 
-    public VerificationTestPackageInfo? SelectedTest
+    public VerificationTestPackageInfo SelectedTest
     {
         get => this.selectedTest;
         set

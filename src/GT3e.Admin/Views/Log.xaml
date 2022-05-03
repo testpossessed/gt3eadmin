@@ -8,109 +8,115 @@
              d:DesignHeight="450"
              d:DesignWidth="800"
              d:DataContext="{d:DesignInstance vm:LogViewModel}">
-  <Grid HorizontalAlignment="Stretch"
-        VerticalAlignment="Stretch">
-
-    <Grid.RowDefinitions>
-      <RowDefinition Height="Auto" />
-      <RowDefinition Height="*" />
-    </Grid.RowDefinitions>
-    <Grid Grid.Row="0"
-          VerticalAlignment="Top"
-          HorizontalAlignment="Stretch">
-      <Grid.ColumnDefinitions>
-        <ColumnDefinition Width="*" />
-        <ColumnDefinition Width="*" />
-      </Grid.ColumnDefinitions>
-
-      <GroupBox Grid.Column="0"
-                Header="Message Types"
-                Margin="10">
-        <WrapPanel ItemWidth="175"
-                   ItemHeight="30"
-                   Margin="5">
-
-          <CheckBox IsChecked="{Binding IncludeBroadcastingEvents}">
-            Broadcasting Events
-          </CheckBox>
-
-          <CheckBox IsChecked="{Binding IncludeEntryListUpdates}">
-            Entry List Updates
-          </CheckBox>
-
-          <CheckBox IsChecked="{Binding IncludeRealtimeUpdates}">
-            Realtime Updates
-          </CheckBox>
-
-          <CheckBox IsChecked="{Binding IncludeRealtimeCarUpdates}">
-            Realtime Car Updates
-          </CheckBox>
-
-          <CheckBox IsChecked="{Binding IncludeTrackDataUpdates}">
-            Track Data Updates
-          </CheckBox>
-        </WrapPanel>
-      </GroupBox>
-
-      <GroupBox Grid.Column="1"
-                IsEnabled="{Binding IncludeBroadcastingEvents}"
-                Header="Broadcasting Events"
-                Margin="10">
-        <WrapPanel ItemWidth="175"
-                   ItemHeight="30"
-                   Margin="5">
-
-          <CheckBox IsChecked="{Binding IncludeAccidentEvents}">
-            Accident
-          </CheckBox>
-
-          <CheckBox IsChecked="{Binding IncludeBestPersonalLapEvents}">
-            Best Personal Lap
-          </CheckBox>
-
-          <CheckBox IsChecked="{Binding IncludeBestSessionLapEvents}">
-            Best Session Lap
-          </CheckBox>
-
-          <CheckBox IsChecked="{Binding IncludeGreenFlagEvents}">
-            Green Flag
-          </CheckBox>
-
-          <CheckBox IsChecked="{Binding IncludeLapCompletedEvents}">
-            Completed Lap
-          </CheckBox>
-
-          <CheckBox IsChecked="{Binding IncludePenaltyCommEvents}">
-            Penalty Communication
-          </CheckBox>
-
-          <CheckBox IsChecked="{Binding IncludeSessionOverEvents}">
-            Session Over
-          </CheckBox>
-
-          <CheckBox IsChecked="{Binding IncludeUntypedEvents}">
-            Untyped
-          </CheckBox>
-        </WrapPanel>
-      </GroupBox>
-    </Grid>
-    <Grid Grid.Row="1"
-          HorizontalAlignment="Stretch"
+    <Grid HorizontalAlignment="Stretch"
           VerticalAlignment="Stretch">
-      <Grid.ColumnDefinitions>
-        <ColumnDefinition Width="*" />
-        <ColumnDefinition Width="500" />
-      </Grid.ColumnDefinitions>
 
-      <ListBox Grid.Column="0"
-               SelectedItem="{Binding SelectedEvent, Mode=TwoWay}"
-               ItemsSource="{Binding FilteredEvents}"
-               DisplayMemberPath="Message" />
-      <TextBlock Grid.Column="1"
-                 Text="{Binding SelectedEventJson}"
-                 HorizontalAlignment="Stretch"
-                 VerticalAlignment="Stretch"
-                 TextWrapping="Wrap" />
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+        <Grid Grid.Row="0"
+              VerticalAlignment="Top"
+              HorizontalAlignment="Stretch">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+
+            <GroupBox Grid.Column="0"
+                      Header="Message Types"
+                      Margin="10">
+                <WrapPanel ItemWidth="175"
+                           ItemHeight="30"
+                           Margin="5">
+
+                    <CheckBox IsChecked="{Binding IncludeBroadcastingEvents, Mode=TwoWay}">
+                        Broadcasting Events
+                    </CheckBox>
+
+                    <CheckBox IsChecked="{Binding IncludeEntryListUpdates, Mode=TwoWay}">
+                        Entry List Updates
+                    </CheckBox>
+
+                    <CheckBox IsChecked="{Binding IncludeRealtimeUpdates, Mode=TwoWay}">
+                        Realtime Updates
+                    </CheckBox>
+
+                    <CheckBox IsChecked="{Binding IncludeRealtimeCarUpdates, Mode=TwoWay}">
+                        Realtime Car Updates
+                    </CheckBox>
+
+                    <CheckBox IsChecked="{Binding IncludeTrackDataUpdates, Mode=TwoWay}">
+                        Track Data Updates
+                    </CheckBox>
+                </WrapPanel>
+            </GroupBox>
+
+            <GroupBox Grid.Column="1"
+                      IsEnabled="{Binding IncludeBroadcastingEvents}"
+                      Header="Broadcasting Events"
+                      Margin="10">
+                <WrapPanel ItemWidth="175"
+                           ItemHeight="30"
+                           Margin="5">
+
+                    <CheckBox IsChecked="{Binding IncludeAccidentEvents, Mode=TwoWay}">
+                        Accident
+                    </CheckBox>
+
+                    <CheckBox IsChecked="{Binding IncludeBestPersonalLapEvents, Mode=TwoWay}">
+                        Best Personal Lap
+                    </CheckBox>
+
+                    <CheckBox IsChecked="{Binding IncludeBestSessionLapEvents, Mode=TwoWay}">
+                        Best Session Lap
+                    </CheckBox>
+
+                    <CheckBox IsChecked="{Binding IncludeGreenFlagEvents, Mode=TwoWay}">
+                        Green Flag
+                    </CheckBox>
+
+                    <CheckBox IsChecked="{Binding IncludeLapCompletedEvents, Mode=TwoWay}">
+                        Completed Lap
+                    </CheckBox>
+
+                    <CheckBox IsChecked="{Binding IncludePenaltyCommEvents, Mode=TwoWay}">
+                        Penalty Communication
+                    </CheckBox>
+
+                    <CheckBox IsChecked="{Binding IncludeSessionOverEvents, Mode=TwoWay}">
+                        Session Over
+                    </CheckBox>
+
+                    <CheckBox IsChecked="{Binding IncludeUntypedEvents, Mode=TwoWay}">
+                        Untyped
+                    </CheckBox>
+                </WrapPanel>
+            </GroupBox>
+        </Grid>
+        <Button Grid.Row="1"
+                HorizontalAlignment="Right"
+                Command="{Binding LoadCommand}">
+            Apply
+        </Button>
+        <Grid Grid.Row="2"
+              HorizontalAlignment="Stretch"
+              VerticalAlignment="Stretch">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="500" />
+            </Grid.ColumnDefinitions>
+
+            <ListBox Grid.Column="0"
+                     SelectedItem="{Binding SelectedEvent, Mode=TwoWay}"
+                     ItemsSource="{Binding FilteredEvents}"
+                     DisplayMemberPath="Message" />
+            <TextBlock Grid.Column="1"
+                       Text="{Binding SelectedEventJson}"
+                       HorizontalAlignment="Stretch"
+                       VerticalAlignment="Stretch"
+                       TextWrapping="Wrap" />
+        </Grid>
     </Grid>
-  </Grid>
 </UserControl>

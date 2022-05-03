@@ -12,7 +12,7 @@ public class CustomSkinsViewModel : ObservableObject
 {
   private RaceSessionViewModel currentRaceSession;
   private bool isDownloadEnabled;
-  private CustomSkinInfo? selectedSkin;
+  private CustomSkinInfo selectedSkin;
 
   public CustomSkinsViewModel()
   {
@@ -39,7 +39,7 @@ public class CustomSkinsViewModel : ObservableObject
     set => this.SetProperty(ref this.isDownloadEnabled, value);
   }
 
-  public CustomSkinInfo? SelectedSkin
+  public CustomSkinInfo SelectedSkin
   {
     get => this.selectedSkin;
     set
